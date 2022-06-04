@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Photo;
+use App\Models\Paragraph;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -93,6 +94,36 @@ class PhotoController extends Controller
     }
 
 
+    // First paragraph function 
+
+    public function firstPargraph(Request $req){
+
+            if($req->paragraph){
+
+                $paragraph = DB::table('paragraphs')->where('title', 'first paragraph')->first();
+
+                if($paragraph){
+
+                    DB::table('paragraphs')->where('title', 'first paragraph')->delete();
+                }
+            }
+
+            $paragraph = new Paragraph;
+            $paragraph->title = 'first paragraph';
+            $paragraph->paragraph = $req->paragraph;
+           
+           if($paragraph->save()){
+
+            return response('First paragraph saved' , 201);
+           
+        } else {
+
+            return response('Error saving first paragraph' , 403);
+        }
+           
+            
+
+    }
     
     /**
      * Display a listing of the resource.

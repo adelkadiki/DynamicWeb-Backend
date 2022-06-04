@@ -20,6 +20,8 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/photo', [PhotoController::class, 'photoUpload']);
 Route::post('/bg', [PhotoController::class, 'backGroundImage']);
+Route::post('/firstPargraph', [PhotoController::class, 'firstPargraph']);
+
 
 Route::get('/test', function(){
 

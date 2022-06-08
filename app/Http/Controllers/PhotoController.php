@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Photo;
 use App\Models\Paragraph;
+use App\Models\Headline;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -93,37 +94,163 @@ class PhotoController extends Controller
 
     }
 
+    // Side image function
+    public function sideImageUploading(Request $req){
 
-    // First paragraph function 
+        if($req->hasFile('sideImage')) {
+
+            $photo = DB::table('photos')->where('name', 'sideImage.jpg')->first();
+            
+            if(Storage::exists('public/photos/sideImage.jpg') && $photo){
+
+                 DB::table('photos')->where('name', 'sideImage.jpg')->delete();
+                 Storage::delete('public/photos/sideImage.jpg');
+               
+            }
+
+            $fileName = 'sideImage.jpg';
+
+        $path = $req->file('sideImage')->storeAs('public/photos', $fileName);
+       
+        $img = Image::make(storage_path('app/public/photos/sideImage.jpg'))->resize(350, null, function($constraint){
+         $constraint->aspectRatio();
+        })->save(storage_path('app/public/photos/sideImage.jpg'));  
+
+        $newPhoto = new Photo;
+        $newPhoto->name = $fileName;
+        $newPhoto->path = $path;
+        $newPhoto->save();
+        return response('image saved' , 201);
+
+        } else {
+
+            return response('Image not found', 404);
+        }
+
+
+    }
+
+
+    // First paragraph function submiting
 
     public function firstPargraph(Request $req){
 
             if($req->paragraph){
 
-                $paragraph = DB::table('paragraphs')->where('title', 'first paragraph')->first();
+                    $paragraph = DB::table('paragraphs')->where('title', 'first paragraph')->first();
 
-                if($paragraph){
+                     if($paragraph){
 
-                    DB::table('paragraphs')->where('title', 'first paragraph')->delete();
+                        DB::table('paragraphs')->where('title', 'first paragraph')->delete();
+                        }
+            
+                        $paragraph = new Paragraph;
+                        $paragraph->title = 'first paragraph';
+                        $paragraph->paragraph = $req->paragraph;
+                        $paragraph->save();
+
+                        return response('First paragraph saved' , 201);
+                           
+                             } else {
+
+                                     return response('Error saving first paragraph' , 403);
+                                    }
+           
+    }
+
+    // Get first paragraph text
+    public function getFirstParagraph(){
+
+            $content = DB::table('paragraphs')->where('title', 'first paragraph')->first();
+            
+            if($content){
+                return response($content->paragraph, 201);
+            } else {
+
+                return response('', 201);    
+            }
+            
+    }
+
+    // Side paragraph uploading
+    public function sideParagraphUploading(Request $req){
+
+        if($req->sideParag){
+
+            $paragraph = DB::table('paragraphs')->where('title', 'side paragraph')->first();
+
+             if($paragraph){
+
+                DB::table('paragraphs')->where('title', 'side paragraph')->delete();
                 }
+    
+                $paragraph = new Paragraph;
+                $paragraph->title = 'side paragraph';
+                $paragraph->paragraph = $req->sideParag;
+                $paragraph->save();
+
+                return response('Side paragraph saved' , 201);
+                   
+                     } else {
+
+                             return response('Error saving first paragraph' , 403);
+                            }
+   
+    }
+
+    // Get side paragraph
+    public function getSideParagraph(Request $req){
+
+        $content = DB::table('paragraphs')->where('title', 'side paragraph')->first();
+            
+            if($content){
+                return response($content->paragraph, 201);
+            } else {
+
+                return response('', 201);    
+            }
+    }
+
+
+    // Background image headline
+    public function backgroundImageLine(Request $req){
+
+            if($req->line){
+
+                $headline = DB::table('headlines')->where('title', 'background image line')->first();
+                
+                if($headline){
+                    DB::table('headlines')->where('title', 'background image line')->delete();
+                }
+
+                        $headline = new Headline;
+                        $headline->title = 'background image line';
+                        $headline->line = $req->line;
+                        
+                        if($headline->save()){
+                            return response('Background image line saved' , 201);
+                        }
+            } else {
+
+                response('Headline not found', 403);
             }
 
-            $paragraph = new Paragraph;
-            $paragraph->title = 'first paragraph';
-            $paragraph->paragraph = $req->paragraph;
-           
-           if($paragraph->save()){
-
-            return response('First paragraph saved' , 201);
-           
-        } else {
-
-            return response('Error saving first paragraph' , 403);
-        }
-           
-            
-
     }
+
+    // Get background image headline
+    public function getBackgroundImageHeadline(){
+
+        $headline = DB::table('headlines')->where('title', 'background image line')->first();
+
+         if($headline){
+             return response($headline->line, 201);
+         
+            }else {
+
+              return response('', 201);  
+         }       
+    }
+
     
     /**
      * Display a listing of the resource.

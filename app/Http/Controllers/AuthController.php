@@ -32,10 +32,10 @@ class AuthController extends Controller
     //Login function
     public function login(Request $req){
 
-        $email = $req->email;
+        $name = $req->name;
         $password = $req->password;
 
-        $user = User::where('email', $email)->first();
+        $user = User::where('name', $name)->first();
 
         if(!$user || !Hash::check($password, $user->password)){
 
@@ -53,7 +53,7 @@ class AuthController extends Controller
     }
 
     // Logout function
-    public function logout(Request $req){
+    public function logout(){
 
         auth()->user()->tokens()->delete();
         return response('Logged out succesfully', 200);

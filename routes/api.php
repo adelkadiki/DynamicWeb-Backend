@@ -18,11 +18,11 @@ use App\Http\Controllers\PhotoController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/photo', [PhotoController::class, 'photoUpload']);
-Route::post('/bg', [PhotoController::class, 'backGroundImage']);
+
+
 Route::post('/firstPargraph', [PhotoController::class, 'firstPargraph']);
 Route::get('/getFirstParagraph', [PhotoController::class, 'getFirstParagraph']);
-Route::post('/backgroundImageLine', [PhotoController::class, 'backgroundImageLine']);
+
 Route::get('/getBackgroundImageHeadline', [PhotoController::class, 'getBackgroundImageHeadline']);
 Route::post('/sideImageUploading', [PhotoController::class, 'sideImageUploading']);
 Route::post('/sideParagraphUploading', [PhotoController::class, 'sideParagraphUploading']);
@@ -37,9 +37,10 @@ Route::get('/test', function(){
 
 Route::group(['middleware'=> ['auth:sanctum']], function(){
     
-       
-
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/backgroundImageLine', [PhotoController::class, 'backgroundImageLine']);       
+    Route::post('/bg', [PhotoController::class, 'backGroundImage']);
+    Route::post('/logo', [PhotoController::class, 'photoUpload']);
+    Route::get('/logout', [AuthController::class, 'logout']);
     
 
 } );

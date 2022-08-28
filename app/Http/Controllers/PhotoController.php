@@ -135,19 +135,43 @@ class PhotoController extends Controller
 
     public function firstPargraph(Request $req){
 
+
+                       $line = DB::table('headlines')->where('title', 'first headline')->first();
+
+                        if($line){
+
+                            DB::table('headlines')->where('title', 'first headline')->delete();
+                        }   
+
+                        $paragraph = DB::table('paragraphs')->where('title', 'first paragraph')->first();
+
+                    
+                        if($paragraph){
+   
+                           DB::table('paragraphs')->where('title', 'first paragraph')->delete();
+                           }
+
+
             if($req->paragraph){
 
-                    $paragraph = DB::table('paragraphs')->where('title', 'first paragraph')->first();
-
-                     if($paragraph){
-
-                        DB::table('paragraphs')->where('title', 'first paragraph')->delete();
-                        }
+               
             
                         $paragraph = new Paragraph;
                         $paragraph->title = 'first paragraph';
                         $paragraph->paragraph = $req->paragraph;
                         $paragraph->save();
+
+                        
+                        if($req->headline){
+                                       
+                                               
+                                 $headline = new Headline;
+                                 $headline->title = 'first headline';
+                                 $headline->line = $req->headline;
+                                 $headline->save(); 
+
+                                   } 
+
 
                         return response('First paragraph saved' , 201);
                            
@@ -249,6 +273,22 @@ class PhotoController extends Controller
 
               return response('', 201);  
          }       
+    }
+
+    public function getAllHeadlines(){
+
+        $headlines = Headline::all();
+        
+
+        return $headlines;
+
+    }
+
+    public function getAllParagraphs(){
+
+        $paragraphs = Paragraph::all();
+
+        return $paragraphs;
     }
 
     

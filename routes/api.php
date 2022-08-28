@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\GalleryController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,14 +20,15 @@ use App\Http\Controllers\PhotoController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-
-Route::post('/firstPargraph', [PhotoController::class, 'firstPargraph']);
 Route::get('/getFirstParagraph', [PhotoController::class, 'getFirstParagraph']);
 
 Route::get('/getBackgroundImageHeadline', [PhotoController::class, 'getBackgroundImageHeadline']);
-Route::post('/sideImageUploading', [PhotoController::class, 'sideImageUploading']);
-Route::post('/sideParagraphUploading', [PhotoController::class, 'sideParagraphUploading']);
+
+
 Route::get('/getSideParagraph', [PhotoController::class, 'getSideParagraph']);
+Route::get('/getAllHeadlines', [PhotoController::class, 'getAllHeadlines']);
+Route::get('/getAllParagraphs', [PhotoController::class, 'getAllParagraphs']);
+Route::post('/newImage', [GalleryController::class, 'newImage']);
 
 Route::get('/test', function(){
 
@@ -40,8 +42,12 @@ Route::group(['middleware'=> ['auth:sanctum']], function(){
     Route::post('/backgroundImageLine', [PhotoController::class, 'backgroundImageLine']);       
     Route::post('/bg', [PhotoController::class, 'backGroundImage']);
     Route::post('/logo', [PhotoController::class, 'photoUpload']);
-    Route::get('/logout', [AuthController::class, 'logout']);
+    Route::post('/firstPargraph', [PhotoController::class, 'firstPargraph']);    
+    Route::post('/sideParagraphUploading', [PhotoController::class, 'sideParagraphUploading']);
+    Route::post('/sideImageUploading', [PhotoController::class, 'sideImageUploading']);
     
+    Route::get('/logout', [AuthController::class, 'logout']);
+        
 
 } );
 
